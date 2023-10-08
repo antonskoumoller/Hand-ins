@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,31 +9,29 @@ import java.io.FileNotFoundException;
  */
 public class ProfanityFilter {
     private Scanner sc;
-    String[] characters = {"*","&","#","$","%"};
-    String profanities = "";
-    String[] profArr;
-    String output = "";
-    String[] symbols = {"!","?",".",","};
+    private String[] characters = {"*","&","#","$","%"};
+    private String profanities = "";
+    private String[] profArr;
+    private ArrayList<String> output = new ArrayList<>();
+    private String[] symbols = {"!","?",".",","};
 
 
     //  private File readFile() {
-    //        File file = new File("C:/Users/anton/Desktop/IP/Hand-ins/Hand-ins/handIn6/input.txt");
+    //        File file = new File("C:/Users/anton/Desktop/IP/Hand-ins/Hand-ins/handIn6/input2.txt");
     //        return file;
     //  }
     
-    public ProfanityFilter() {
+    public ProfanityFilter()    {
         sc = new Scanner(System.in);
         readProfanities();
        
-        read();
-        System.out.println(output);
+        read();  
+        stringify();      
         
-        
-
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         ProfanityFilter proffilter = new ProfanityFilter();
     }
 
@@ -46,35 +47,37 @@ public class ProfanityFilter {
 
     private void read() {
         while (sc.hasNextLine()) {
-            readLine(sc.nextLine().split(" "));
+            String line = sc.nextLine();
+            if (line.isEmpty()) {
+                output.add("");
+            } else {
+                readLine( new ArrayList<String>(Arrays.asList((line.split(" ")))));
+            }
         }
     }
 
 
-    private void readLine(String[] a) {
+    private void readLine(List<String> a) {
         if (profanities.isEmpty()) {
             toOutput(a);
         } else {
             // TODO: Fix this empty line and new line character insertion shit
-            if (a.toString().equals("")) {
-                output += "\n";
-            } else {
-                for (int i = 0; i < a.length; i++) {
-                    String word = a[i];
-                    if (isProfanity(word.toLowerCase())) {
-                        if (containsSymbol(word)) {
-                            String symbol = word.substring(word.length()-1, word.length());
-                            word = word.substring(0,word.length()-1);
-                            a[i] = "" + replaceProfanity(word) + symbol;
-                        } else {
-                            a[i] = replaceProfanity(word);
-                        }
+            for (int i = 0; i < a.size(); i++) {
+                String word = a.get(i);
+                if (isProfanity(word.toLowerCase())) {
+                    if (containsSymbol(word)) {
+                        String symbol = word.substring(word.length()-1, word.length());
+                        word = word.substring(0,word.length()-1);
+                        a.set(i, "" + replaceProfanity(word) + symbol);
+                    } else {
+                        a.set(i,replaceProfanity(word));
+;
                     }
-                
                 }
-                toOutput(a);
             }
+            toOutput(a);
         }
+
     }
 
     private boolean containsSymbol(String a) {
@@ -107,8 +110,14 @@ public class ProfanityFilter {
         return censored;
     }
 
-    private void toOutput(String[] a) {
-        output += String.join(" ",a);
+    private void toOutput(List a) {
+        String outputLine = String.join(" ",a);
+        output.add(outputLine);
+    }
+
+    public void stringify() {
+        for (int i = 0; i < output.size(); i++)
+        System.out.println(output.get(i));
     }
 
 }

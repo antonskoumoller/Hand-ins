@@ -11,11 +11,11 @@ public class Todo {
     }
 
 
-    public void addTask(String description, int priority, int workload) {
+    public void addTask(String description, int priority, int workload) throws Exception {
         try {
             Task task = new Task(description,priority,workload);
             todo.add(task);
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidInputException e) {
             System.out.println(e.getMessage());
         }
         
@@ -24,8 +24,7 @@ public class Todo {
 
     public void print() {
         if (todo.isEmpty()) {
-            System.out.println("Todo:\n-----\nYou're all done for today! #TodoZero");
-            if (workDone != 0) System.out.print(workDone + " minutes of work done!");
+            System.out.println("You're all done for today! #TodoZero");
             return;
         }
         
@@ -40,19 +39,15 @@ public class Todo {
     }
 
     public void completeTask(int index) {
-        try {
-            int workload = todo.get(index).getWorkload();
-            workDone += workload;
-            todo.remove(index);
-        } catch (Exception e) {
-            System.out.println("Invalid index");
-        }
+        int workload = todo.get(index).getWorkload();
+        workDone += workload;
+        todo.remove(index);
     }
 
     public void printPriority(int limit) {
         boolean tasksPrinted = false;
         for (Task task : todo) {
-            if (task.getPriority() <= limit) {
+            if (task.getPriority() > limit) {
                 if (!tasksPrinted) System.out.println("Filtered todo:\n--------------");
                 System.out.println(task.toString());
                 tasksPrinted = true;

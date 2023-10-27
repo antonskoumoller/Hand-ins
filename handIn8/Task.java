@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Task
  */
@@ -8,33 +5,48 @@ public class Task {
     private String description;
     private int priority;
     private int workload;
-
-    Map<Integer,String> priorityMap;
+    private String priorityString;
 
     
-    public Task(String description, int priority, int workload) throws Exception {
-        if (priority < 1 || priority > 4) {
-            throw new InvalidInputException(description + " has invalid priority");
+    public Task(String description, int priority, int workload) {
+        switch (priority) {
+            case 1:
+                priorityString = "very important";
+                break;
+            case 2:
+                priorityString = "important";
+                break;
+            case 3:
+                priorityString = "unimportant";
+                break;
+            case 4:
+                priorityString = "after learn Portuguese";
+                break;
+            default:
+                throw new IllegalArgumentException(description + " has invalid priority");
         }
-
+        
         if (workload < 0) {
-            throw new InvalidInputException(description + " has invalid workload");
+            throw new IllegalArgumentException(description + " has invalid workload");
         }
         
         this.description = description;
         this.priority = priority;
         this.workload = workload;
-        priorityMap = new HashMap<>();
-        priorityMap.put(1,"very important");
-        priorityMap.put(2,"important");
-        priorityMap.put(3,"unimportant");
-        priorityMap.put(4,"after learn Portuguese");
+
         
 
     }
 
     public String toString() {
-        return description + " takes " + workload + " and has priority " + priorityMap.get(priority);
+        return description + " takes " + workload + " minutes and has priority " + priorityString;
     }
 
+    public int getWorkload() {
+        return workload;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
 }

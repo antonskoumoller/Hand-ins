@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -60,7 +61,6 @@ public class Todo {
         }
 
         if (!tasksPrinted) System.out.println("No tasks with given priority");
-
     }
 
     public void printPrioritized() {
@@ -95,6 +95,4 @@ public class Todo {
             System.out.println(task.toString());  
         }
     }
-
-
 }

@@ -37,7 +37,7 @@ public class Task {
         
 
     }
-
+ 
     public String toString() {
         return description + " takes " + workload + " minutes and has priority " + priorityString;
     }
